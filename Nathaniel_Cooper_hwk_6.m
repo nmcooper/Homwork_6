@@ -8,7 +8,7 @@ e=0.1; % prey to preditor coverstion efficieny
 d=0.1; %predator birth rate
 b=0.5; % prey birth rate
 h=0.0015; % prey handiling time
-k=15000; % carring capacity (1st value) 
+K=15000; % carring capacity (1st value) 
 
 n0=[8000;2000]; % Vi=8000 and Pi=2000 inital values
 
@@ -19,8 +19,10 @@ figure;
 subplot(1,2,1);
 plot(T,Y); % plots P and V vs time
 xlabel('Time'); ylabel('Abundance, Predator and Prey Populations');
+legend({'V, Prey abundance','P, Predator abundance'}); 
 
-subpot(1,2,2);
+hold on
+subplot(1,2,2);
 isoV = @(x) b/a + (b.*x.*(a*h -1/K - (a/K).*h.*x))./a  ; % Prey isocline
 plot(1:25,feval(isoV,1:25))
 isoP = d/(e*a - a*d*h); % predator isocline
@@ -29,5 +31,5 @@ plot(Y(:,1),Y(:,2),'r-','LineWidth',2)
 xlabel('V, prey abundance')
 ylabel('P, predator abundance')
 legend({'Prey isocline','Predator isocline','Population trajectory'});  
-ylim([0 100]); xlim([0 25])
-
+ylim([0 10000]); xlim([0 25])
+hold off
