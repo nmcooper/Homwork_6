@@ -20,4 +20,14 @@ subplot(1,2,1);
 plot(T,Y); % plots P and V vs time
 xlabel('Time'); ylabel('Abundance, Predator and Prey Populations');
 
+subpot(1,2,2);
+isoV = @(x) b/a + (b.*x.*(a*h -1/K - (a/K).*h.*x))./a  ; % Prey isocline
+plot(1:25,feval(isoV,1:25))
+isoP = d/(e*a - a*d*h); % predator isocline
+line([isoP isoP],[0 100],'Color','g');
+plot(Y(:,1),Y(:,2),'r-','LineWidth',2)
+xlabel('V, prey abundance')
+ylabel('P, predator abundance')
+legend({'Prey isocline','Predator isocline','Population trajectory'});  
+ylim([0 100]); xlim([0 25])
 
