@@ -13,4 +13,11 @@ k=15000; % carring capacity (1st value)
 n0=[8000;2000]; % Vi=8000 and Pi=2000 inital values
 
 % ODE solver 
-[T, Y] = ode45(@(t,y) LV_Pred_RM(y,b,a,e,d,K,h),time,n0);
+[T, Y] = ode45(@(t,y) LV_Pred_RM(y,b,a,e,d,K,h),time,n0); % solves de
+
+figure;
+subplot(1,2,1);
+plot(T,Y); % plots P and V vs time
+xlabel('Time'); ylabel('Abundance, Predator and Prey Populations');
+
+
