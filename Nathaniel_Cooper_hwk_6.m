@@ -35,22 +35,36 @@ hold off
 
 
 %% Qusetion 2
-% set matrix paramators for Jacobian
+% set matrix paramators for Jacobian solve using simbolic math 
+syms a e d b h K V P % 
+aa = 0.0001;      % attack rate
+ee = 0.1;       % conversion efficiency rate
+dd = 0.1;       % predator death rate
+bb = 0.5;       % prey birth rate
+hh = .5;         % prey handling time
+KK = 15000;       % prey carrying capacity
 
-V=d/(a*e-a*d*h); % V at equalibrium 
-P=(b/a)+(b*V(a*h-(1/K)-(a/K)*h*V)/a); % P at equlibrium
+% L-V growth equations for Lotka Volterra model
+dV_dt = b*V*(1-V/K) - (a*V*P)/(1+a*h*V);
+dP_dt = e*((a*V*P)/(1+a*h*V)) -d*P;
 
-a11=b-(P*a)/(V*a*h+1)^2-(2*V*b)/K; % p(dv/dv)
+V0 = simplify(solve(dP_dt,V)); % value of V when P at equilibtrium (P isocline)
+P0 = simplify(solve(dV_dt,P)); % value of P when V at equilibrium (V isocline)
 
-a12=-(V*a)/(V*a*h+1); % P(dv/dp)
+V0 = subs(V0,[a e d h],[aa ee dd hh]);
+P0 = subs(P0,[a b h K V],[aa bb hh KK V0]);
 
-a21=(P*a*e)/(V*a*h+1)^2; %p(dp/dv)
+a11a = simplify(diff(dV_dt,V)); % solves the 
+a11 = subs(a11a,[a e d b h K V P],[aa ee dd bb hh KK V0 P0]);
+a12a = simplify(diff(dV_dt,P));
+a12 = subs(a12a,[a e d b h K V P],[aa ee dd bb hh KK V0 P0]);
+a21a =simplify(diff(dP_dt,V));
+a21 = subs(a21a,[a e d b h K V P],[aa ee dd bb hh KK V0 P0]);
+a22a =simplify(diff(dP_dt,P));
+a22 = subs(a22a,[a e d b h K V P],[aa ee dd bb hh KK V0 P0]);
 
-a22=(V*a*e)/(V*a*h+1)-d; % P(dp/dv)
-
-J=[a11  a12; a21  a22]; % Jacobian Matrix 
-
-J_eig=eig(J); % egien valuse of Jacobian matrix
+J = [a11 a12; a21 a22] % Jacobian matrix 
+J_eig = eig(J) % eigan values of the jacobian matrix 
 
 
 
