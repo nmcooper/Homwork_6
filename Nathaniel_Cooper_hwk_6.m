@@ -13,25 +13,24 @@ K=15000; % carring capacity (1st value)
 n0=[8000;2000]; % Vi=8000 and Pi=2000 inital values
 
 % ODE solver 
-[T, Y] = ode45(@(t,y) LV_Pred_RM(y,b,a,e,d,K,h),time,n0); % SEE ATTACHED FUNCTION
+[T, Y] = ode45(@(t,y) LV_Pred_RM(y,b,a,e,d,K,h),time,n0); % SEE ATTACHED FUNCTION: LV_Pred_RM
 
 figure;
 subplot(1,2,1);
 plot(T,Y); % plots P and V vs time
 xlabel('Time'); ylabel('Abundance, Predator and Prey Populations');
 legend({'V, Prey abundance','P, Predator abundance'}); 
-
-hold on
 subplot(1,2,2);
+hold on
 isoV = @(x) b/a + (b.*x.*(a*h -1/K - (a/K).*h.*x))./a  ; % Prey isocline
-plot(1:25,feval(isoV,1:25))
+plot(1:8000,feval(isoV,1:8000))
 isoP = d/(e*a - a*d*h); % predator isocline
-line([isoP isoP],[0 10000],'Color','g');
 plot(Y(:,1),Y(:,2),'r-','LineWidth',2)
 xlabel('V, prey abundance')
 ylabel('P, predator abundance')
-legend({'Prey isocline','Predator isocline','Population trajectory'});  
-ylim([0 10000]); xlim([0 25])
+line([isoP isoP],[0 10000],'Color','g');
+legend({'Prey isocline','Population trajectory','Predator isocline'});  
+ylim([0 10000]); xlim([0 8000])
 hold off
 
 
@@ -39,7 +38,7 @@ hold off
 % set matrix paramators for Jacobian
 
 V=d/(a*e-a*d*h); % V at equalibrium 
-P=(b/a)+(b*V(a*h-(1/K)-(a/K)*h*V)/a; % P at equlibrium
+P=(b/a)+(b*V(a*h-(1/K)-(a/K)*h*V)/a); % P at equlibrium
 
 a11=b-(P*a)/(V*a*h+1)^2-(2*V*b)/K; % p(dv/dv)
 
